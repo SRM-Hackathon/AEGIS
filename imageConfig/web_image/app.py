@@ -4,44 +4,44 @@ app = Flask(__name__)
 @app.route("/")
 def index():
     return render_template("register.html")
-    # print("Getting vault credentials")
+    print("Getting vault credentials")
     
-    # # vault_response = vault_deploy()
-    # if vault_response != 200 :
-    #     return "vault_doesn't recognize your key"
-    # else:
-    #     return "some prompt"
+    # vault_response = vault_deploy()
+    if vault_response != 200 :
+        return "vault_doesn't recognize your key"
+    else:
+        return "some prompt"
   
 
-# @app.route("/register",methods=['POST'])
-# def register():
-#     print("from register *************************")
-#     username=request.form['reg_username']
-#     password=request.form['reg_password']
-#     print(username,password)
-#     # client_token = create_user(username,password)
-#     return render_template("register.html",client_token=jsonify(client_token))
+@app.route("/register",methods=['POST'])
+def register():
+    print("from register *************************")
+    username=request.form['reg_username']
+    password=request.form['reg_password']
+    print(username,password)
+    # client_token = create_user(username,password)
+    return render_template("register.html",client_token=jsonify(client_token))
 
-# @app.route('/process', methods=['POST'])
-# def process():
-# 	username = request.form['reg_username']
-# 	password = request.form['reg_password']
-#     # print(username)
-# 	if username and password:
-#         print(username)
-# 		newName = username[::-1]
-# 		return jsonify({'name' : newName})
-# 	return jsonify({'error' : 'Missing data!'})
+@app.route('/process', methods=['POST'])
+def process():
+	username = request.form['reg_username']
+	password = request.form['reg_password']
+    # print(username)
+	if username and password:
+        print(username)
+		newName = username[::-1]
+		return jsonify({'name' : newName})
+	return jsonify({'error' : 'Missing data!'})
 
-# @app.route('/process', methods=['POST'])
-# def process():
-#     username = request.form["nameInput"]
-#     password = request.form["passwordInput"]
+@app.route('/process', methods=['POST'])
+def process():
+    username = request.form["nameInput"]
+    password = request.form["passwordInput"]
 
-#     # password = request.form["passwordInput"]
-#     print(username)
-#     return jsonify({'error' : 'Missing data!'}) 
-    # password
+    # password = request.form["passwordInput"]
+    print(username)
+    return jsonify({'error' : 'Missing data!'}) 
+    password
 
 
 @app.route('/process', methods=['POST'])

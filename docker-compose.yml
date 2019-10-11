@@ -1,0 +1,31 @@
+version: '3'
+services:
+  web:
+    build: ~/Imaya/GOS/imageConfig/web_image
+    ports:
+      - "5000:5000"
+    volumes:
+      - ~/Imaya/GOS/imageConfig/web_image:/flask_content
+    environment:
+      FLASK_ENV: development
+  # redis:
+  #   image: "redis:alpine"
+  # vault:
+  #   build: ~/Imaya/GOS/imageConfig/vault_image
+  #   cap_add:
+  #     - IPC_LOCK
+  #   environment:
+  #     - VAULT_ADDR=http://localhost:8200
+  #     # - VAULT_CACERT=./cert.pem
+  #   entrypoint: vault server -dev
+  #   ports:
+  #     - "8200:8200"
+  #   depends_on:
+  #     - "web"
+      
+    # image: "vault:1.2.0"
+
+  # proxy:
+  #   build: ~/Imaya/GOS/imageConfig/nginx_proxy
+  #   ports:
+  #     - "80:80"
