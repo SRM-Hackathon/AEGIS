@@ -1,21 +1,23 @@
 import hvac
 import sys
 from typing import Sequence, Dict
+import urllib3
+urllib3.disable_warnings()
 
 globals() ["vault_server"]=""
 globals() ["root_token"]=""
 # vault_server = 'http://localhost:8200'
 
-globals() ["vault_server"]= 'http://localhost:8200'
+globals() ["vault_server"]= 'https://vault:8200'
 # root token has to be taken from terminal
-globals() ["root_token"]="s.XDE4Rbj3O6r83wA1t3lUOH4N"
+globals() ["root_token"]="s.TgrsvoBL0VFqbq3pdsHFnSyK"
 # # root token has to be taken from terminal
 # root_token="s.Fo8fQhZBBs1ztjnLtDk7q3G3"
 # client = hvac.Client(url=vault_server,token=root_token) # root token has to be taken from terminal
-# root token has to be taken from terminal
+# # root token has to be taken from terminal
 
-cert_path=""
-key_path=""
+# cert_path=""
+# key_path=""
 # cert_path = "./cert.pem"
 # key_path = "./key.pem"
 # client.sys.is_initialized()
@@ -25,9 +27,9 @@ threshold = 1
 # vault_token = "s.oTV6FQI3oZRfxlHqiictAPJi"
 
 # keys = ["mfv4ri9bwMd+tRsVX1Zvu/WALChlxSB1VRRZTpbUYXJJ","/RVUmPb4nV8BifuNZjxSNQ11qCoV7bBNa4U4gi3usUDp","ST6P7z6ielMPuZy59zYAMVAL5LNKgHpj2a5h/zZXzLRD"]
-# keys = ["bcbfefc3085dc87f18814b081e9f25d4bd87e4db06a151fc778f3fd7b5b4e856"]
+keys = ["166b33dbac9e3d9fa181bf5d3de67a13d6893c52735f38064cfb7cabea9f4543"]
 def release_keys(client,keyss):
-    response = client.sys.submit_unseal_keys(keyss)
+    response = client.sys.submit_unseal_key(keyss[0])
     return 200 if response['sealed'] == False else 300
 
 def unseal_vault(keys,client):
@@ -41,7 +43,11 @@ def unseal_vault(keys,client):
 # globals() password = ""
 
 def create_mount_point(client):
-    response = client.enable_secret_backend("kv",mount_point="gos")
+    try:
+        response = client.enable_secret_backend("kv",mount_point="gos")
+    except:
+        return "Client Authentication Failed!"
+        # print()
     if "204" in str(response):
         print("secret created successfully")
     else:
@@ -67,17 +73,22 @@ def enable_userpass(client):
 #     globals() password = password
     
 def create_user(username,password):
-    client = hvac.Client(url=globals() ["vault_server"],token=globals() ["root_token"])
-    response = client.create_userpass(username=str(username),password=str(password),mount_point="userpass",policies=["sudo","read","update","create"])
-    if "204" in str(response) :
-        print("User and password created successfully")
-        return 200
-    else:
-        print("Unable to create user")
-        return 400
+    client = hvac.Client(url=globals() ["vault_server"],token=globals() ["root_token"],cert=("cert.pem","key.pem"),verify=False)
+    try:
+        response = client.create_userpass(username=str(username),password=str(password),mount_point="userpass",policies=["sudo","read","update","create"])
+        if "204" in str(response) :
+            print("User and password created successfully")
+            return 200
+        else:
+            print("Unable to create user")
+            return 400
 
+    except Exception as e:
+        print(e,"************")
+        return "Client Authentication Failed!"
+    
 def authenticate_user_pass(username,password):
-    client = hvac.Client(url=globals() ["vault_server"],token=globals() ["root_token"])
+    client = hvac.Client(url=globals() ["vault_server"],token=globals() ["root_token"],cert=("cert.pem","key.pem"),verify=False)
     response = client.auth_userpass(username=str(username),password=str(password),mount_point="userpass",use_token=True)
     print(response)
     if response:
@@ -93,8 +104,10 @@ def on_page_load():
     # # root token has to be taken from terminal
     # root_token="s.Fo8fQhZBBs1ztjnLtDk7q3G3"
     # root token has to be taken from terminal
-    client = hvac.Client(url=globals() ["vault_server"],token=globals() ["root_token"])
-    # unseal_vault(keys,client)
+
+    client = hvac.Client(url=globals() ["vault_server"],token=globals() ["root_token"],cert=("cert.pem","key.pem"),verify=False)
+
+    unseal_vault(keys,client)
     create_mount_point(client)
     configure_mount_point(client)
     enable_userpass(client)
