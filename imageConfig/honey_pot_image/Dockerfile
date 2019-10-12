@@ -1,3 +1,9 @@
+#Author Name - Imaya Bharathi
+#Date - 11-10-2019 -  12-10-2019
+#purpose - Honey Pot Image File
+#Reference - The steps to deploy a honeypot in local machine is taken from below link and made as a docker commands to suit docker compose
+#https://medium.com/@jeremiedaniel48/install-and-setup-cowrie-honeypot-on-ubuntu-linux-5d64552c31dc
+
 FROM ubuntu:16.04
 
 RUN apt-get install sudo
@@ -79,9 +85,9 @@ RUN echo "hostname = testserver5" >> /cowrie/etc/cowrie.cfg
 
 RUN echo "enabled = true" >> /cowrie/etc/cowrie.cfg
 
-# RUN cd ../
+RUN cd ../
 
-# CMD bin/cowrie start
+CMD bin/cowrie start
 
 # EXPOSE 2222
 
