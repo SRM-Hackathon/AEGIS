@@ -11,7 +11,7 @@ def index():
     return render_template("register.html")
     # print("Getting vault credentials")
     
-    # # vault_response = vault_deploy()
+    # # vault_response = vault_deploy(  )
     # if vault_response != 200 :
     #     return "vault_doesn't recognize your key"
     # else:
@@ -56,9 +56,13 @@ def process():
         on_page_load()
         globals() ["count"] +=1
     Confirmpassword = request.form['Confirmpassword']
+    
     email = request.form['email']
     name = request.form['name']
     if name and email and Confirmpassword:
+        if Confirmpassword != name:
+            return jsonify({'error' : "Password doesn't match"})
+        print(Confirmpassword,"*****************")
         client_token=""
         print(name,email)
         try:
@@ -78,7 +82,6 @@ def process():
                 return jsonify({"error":"User is not created"})
         except Exception as e:
             print(e)
-
     return jsonify({'error' : 'Missing data'})
 
 @app.route('/login', methods=['POST'])
@@ -104,4 +107,4 @@ def login():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True)     

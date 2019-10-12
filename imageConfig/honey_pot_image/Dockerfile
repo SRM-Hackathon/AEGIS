@@ -1,62 +1,92 @@
 FROM ubuntu:16.04
 
-RUN apt-get -y update && apt-get -y upgrade
+# RUN apt-get install sudo
+# RUN apt-get update
+# RUN apt-get -y upgrade
 
-RUN apt-get install openssh-server -y
+# RUN apt-get -y install software-properties-common
 
-RUN echo "Port 22222" >> /etc/ssh/sshd_config
+# RUN add-apt-repository ppa:jonathonf/python-3.6
+# RUN apt-get update
+# RUN apt-get -y install python3.6 libpython3.6
 
-RUN apt-get install iptables sudo -y
+# RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.5 2
+# RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.6 1
+# RUN ln -s python3.6 /usr/bin/python3
 
-RUN adduser --disabled-password user1 && adduser user1 sudo
+# RUN apt-get -y update && apt-get -y upgrade
 
-CMD iptables -t nat -A PREROUTING -p tcp --dport 22 -j REDIRECT --to-port 2222
+# RUN apt-get install openssh-server -y
 
-CMD iptables -t nat -A PREROUTING -p tcp --dport 23 -j REDIRECT --to-port 2223
+# RUN echo "Port 22222" >> /etc/ssh/sshd_config
 
-RUN service ssh start 
+# RUN apt-get install iptables RUN -y
 
-RUN apt-get install -y git python-virtualenv libssl-dev libffi-dev build-essential libpython-dev python2.7-minimal authbind
+# RUN adduser --disabled-password user1 && adduser user1 sudo
 
-RUN sudo apt-get -y install python3-pip,
+# CMD iptables -t nat -A PREROUTING -p tcp --dport 22 -j REDIRECT --to-port 2222
 
-RUN adduser --disabled-password cowrie
+# CMD iptables -t nat -A PREROUTING -p tcp --dport 23 -j REDIRECT --to-port 2223
 
-RUN su - cowrie
+# RUN service ssh start 
 
-RUN git clone http://github.com/micheloosterhof/cowrie
+# RUN apt-get install -y git python-virtualenv libssl-dev libffi-dev build-essential libpython-dev python2.7-minimal authbind
 
-RUN cd cowrie
 
-RUN virtualenv cowrie-env
+# RUN apt-get -y install python3-pip
 
-RUN cd cowrie-env
+# RUN adduser --disabled-password cowrie
 
-CMD source bin/activate
+# RUN su - cowrie
 
-# CMD pip list
-# RUN /bin/bash -c "source bin/activate
+# RUN git clone http://github.com/micheloosterhof/cowrie
 
-CMD pip install --upgrade pip
+# RUN cd cowrie
 
-RUN pip install -U -r requirements.txt
+# RUN apt-get install -y  mysql-client
 
-# CMD cd ../cowrie/etc/
+# FROM python:3.7-alpine
+# WORKDIR /flask_content
+# COPY . .
+# ENV FLASK_APP app.py
+# ENV FLASK_RUN_HOST 0.0.0.0
+# # RUN apk add --no-cache gcc musl-dev linux-headers
+# RUN pip3 install -r requirement.txt
+# # COPY . .
+# CMD ["flask", "run"]
 
-RUN ["cp","/cowrie/etc/cowrie.cfg.dist", "/cowrie/etc/cowrie.cfg"]
+# CMD ["mysqld"]
+# RUN virtualenv --system-site-packages cowrie-env
 
-RUN echo "hostname = testserver5" >> /cowrie/etc/cowrie.cfg
+# RUN cd cowrie-env
 
-RUN echo "enabled = true" >> /cowrie/etc/cowrie.cfg
+# CMD source bin/activate
 
-# RUN cd ../
+# # CMD pip list
+# # RUN /bin/bash -c "source bin/activate
 
-# CMD bin/cowrie start
+# CMD pip install --upgrade pip
 
-# EXPOSE 2222
+# RUN cd /cowrie
 
-# EXPOSE 2223
+# RUN pip install -U -r requirements.txt
 
-CMD ["/usr/sbin/sshd", "-D"]
+# # CMD cd ../cowrie/etc/
 
-# CMD exec "$@"
+# RUN ["cp","/cowrie/etc/cowrie.cfg.dist", "/cowrie/etc/cowrie.cfg"]
+
+# RUN echo "hostname = testserver5" >> /cowrie/etc/cowrie.cfg
+
+# RUN echo "enabled = true" >> /cowrie/etc/cowrie.cfg
+
+# # RUN cd ../
+
+# # CMD bin/cowrie start
+
+# # EXPOSE 2222
+
+# # EXPOSE 2223
+
+# CMD ["/usr/sbin/sshd", "-D"]
+
+# # CMD exec "$@"

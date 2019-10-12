@@ -2,14 +2,14 @@ version: '3'
 services:
   web:
     build: ~/Imaya/GOS/imageConfig/web_image
-    ports:
-      - "5000:5000"
+    # ports:
+    #   - "5000:5000"
     volumes:
       - ~/Imaya/GOS/imageConfig/web_image:/flask_content
     environment:
       FLASK_ENV: development
-  # redis:
-  #   image: "redis:alpine"
+  redis:
+    image: "redis:alpine"
   vault:
     build: ~/Imaya/GOS/imageConfig/vault_image
     cap_add:
@@ -22,10 +22,21 @@ services:
       - "8200:8200"
     depends_on:
       - "web"
-      
-    # image: "vault:1.2.0"
-
-  # proxy:
-  #   build: ~/Imaya/GOS/imageConfig/nginx_proxy
-  #   ports:
-  #     - "80:80"
+  honey_pot:
+    build: /home/whirldata/Imaya/GOS/imageConfig/honey_pot_image
+    cap_add:
+      - NET_ADMIN
+    # command: ["/usr/sbin/sshd"]
+    # entrypoint: 
+    #   - mysqld
+    depends_on:
+      - "web"
+      - "vault"
+  proxy:
+    build: ~/Imaya/GOS/imageConfig/nginx_proxy
+    ports:
+      - "80:80"
+    depends_on:
+      - web
+      - vault
+      - honey_pot

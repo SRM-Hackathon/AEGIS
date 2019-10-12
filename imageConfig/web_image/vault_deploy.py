@@ -10,7 +10,7 @@ globals() ["root_token"]=""
 
 globals() ["vault_server"]= 'https://vault:8200'
 # root token has to be taken from terminal
-globals() ["root_token"]="s.TgrsvoBL0VFqbq3pdsHFnSyK"
+globals() ["root_token"]="s.sxOXt8RvsWsdrU9ha8K3f0Iw"
 # # root token has to be taken from terminal
 # root_token="s.Fo8fQhZBBs1ztjnLtDk7q3G3"
 # client = hvac.Client(url=vault_server,token=root_token) # root token has to be taken from terminal
@@ -27,7 +27,7 @@ threshold = 1
 # vault_token = "s.oTV6FQI3oZRfxlHqiictAPJi"
 
 # keys = ["mfv4ri9bwMd+tRsVX1Zvu/WALChlxSB1VRRZTpbUYXJJ","/RVUmPb4nV8BifuNZjxSNQ11qCoV7bBNa4U4gi3usUDp","ST6P7z6ielMPuZy59zYAMVAL5LNKgHpj2a5h/zZXzLRD"]
-keys = ["166b33dbac9e3d9fa181bf5d3de67a13d6893c52735f38064cfb7cabea9f4543"]
+keys = ["b4a434e234172f391bc407d9db6697550fe9facfb93d8ef917ac67b81c19e741"]
 def release_keys(client,keyss):
     response = client.sys.submit_unseal_key(keyss[0])
     return 200 if response['sealed'] == False else 300
