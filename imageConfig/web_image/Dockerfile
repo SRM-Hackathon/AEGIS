@@ -1,3 +1,6 @@
+#Author Name - Imaya Bharathi
+#Date - 11-10-2019 -  12-10-2019
+#purpose - For Running Web Container
 FROM python:3.7-alpine
 WORKDIR /flask_content
 ENV FLASK_APP app.py
